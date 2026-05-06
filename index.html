@@ -32,12 +32,12 @@
     overflow-x: hidden;
   }
 
-  /* ── GLOBAL TOPBAR — visible en todas las secciones ── */
+  /* ── GLOBAL TOPBAR ── */
   .topbar {
     position: fixed; top: 0; left: 0; right: 0; z-index: 200;
     height: 56px;
     display: flex; align-items: center; padding: 0 1.5rem;
-    pointer-events: none; /* no bloquea clicks */
+    pointer-events: none;
   }
   .topbar-logo {
     display: flex; align-items: center; gap: 10px;
@@ -69,20 +69,21 @@
   }
   .screen.active { display: flex; flex-direction: column; }
 
-  /* ── BG IMAGE — solo intro y resultados ── */
+  /* ── BG intro/results — SIN imagen de fondo, solo color oscuro + gradiente ── */
   .screen-bg {
     position: fixed; inset: 0; z-index: -1;
-    background: url('https://res.cloudinary.com/dwcqgcl0m/image/upload/q_auto/f_auto/v1776720417/Labs_olcsss.png') center top / cover no-repeat;
+    /* Se elimina el background-image con el astronauta duplicado */
+    background: #0f1315;
   }
   .screen-bg::after {
     content: '';
     position: absolute; inset: 0;
     background: linear-gradient(
       to bottom,
-      rgba(15,19,21,0.55) 0%,
-      rgba(15,19,21,0.30) 30%,
-      rgba(250,249,247,0.92) 62%,
-      rgba(250,249,247,1)   100%
+      rgba(15,19,21,0.0)  0%,
+      rgba(15,19,21,0.0)  30%,
+      rgba(250,249,247,0.95) 62%,
+      rgba(250,249,247,1)    100%
     );
   }
 
@@ -117,6 +118,8 @@
     padding-top: 200px;
     position: relative; z-index: 1;
   }
+
+  /* Hero image — único astronauta visible */
   .intro-image-hero {
     position: fixed; top: 0; left: 50%; transform: translateX(-50%);
     width: 100%; max-width: 520px;
@@ -160,7 +163,6 @@
     font-weight: 800; line-height: 1.1;
     color: var(--text); margin-bottom: 0.75rem;
   }
-  .intro-h1 span { color: color: var(--text); }
   .intro-desc {
     font-size: 0.95rem; color: var(--orange);
     line-height: 1.65; margin-bottom: 1.5rem;
@@ -186,9 +188,7 @@
   }
 
   /* ══════════════ DATOS / PREGUNTAS ══════════════ */
-  .section-head {
-    margin-bottom: 1.5rem;
-  }
+  .section-head { margin-bottom: 1.5rem; }
   .dim-tag {
     display: inline-flex; align-items: center; gap: 6px;
     font-family: 'Sora', sans-serif;
@@ -433,13 +433,11 @@
   </div>
 </div>
 
-<!-- ════════════════════════════
-     SCREEN 0 — INTRO
-════════════════════════════ -->
+<!-- ════════ SCREEN 0 — INTRO ════════ -->
 <div class="screen active" id="screen-intro">
   <div class="screen-bg"></div>
 
-  <!-- imagen hero fija en intro -->
+  <!-- Único astronauta: el hero image -->
   <div class="intro-image-hero">
     <img src="https://res.cloudinary.com/dwcqgcl0m/image/upload/q_auto/f_auto/v1776720417/Labs_olcsss.png" alt="">
   </div>
@@ -461,13 +459,10 @@
   </div>
 </div>
 
-<!-- ════════════════════════════
-     SCREEN 1 — DATOS PERSONALES
-════════════════════════════ -->
+<!-- ════════ SCREEN 1 — DATOS ════════ -->
 <div class="screen" id="screen-datos">
   <div class="screen-plain-bg"></div>
   <div class="card card-sm fade-in">
-    <!-- progress -->
     <div class="prog-wrap">
       <div class="step-dot active" id="dot-0"></div>
       <div class="prog-line"><div class="prog-fill" id="pf-0" style="width:0%"></div></div>
@@ -495,9 +490,7 @@
   </div>
 </div>
 
-<!-- ════════════════════════════
-     SCREEN 2 — DEPENDENCIA MANUAL
-════════════════════════════ -->
+<!-- ════════ SCREEN 2 — DEPENDENCIA MANUAL ════════ -->
 <div class="screen" id="screen-q1">
   <div class="screen-plain-bg"></div>
   <div class="card card-sm fade-in">
@@ -515,9 +508,7 @@
   </div>
 </div>
 
-<!-- ════════════════════════════
-     SCREEN 3 — CONOCIMIENTO CRÍTICO
-════════════════════════════ -->
+<!-- ════════ SCREEN 3 — CONOCIMIENTO CRÍTICO ════════ -->
 <div class="screen" id="screen-q2">
   <div class="screen-plain-bg"></div>
   <div class="card card-sm fade-in">
@@ -535,16 +526,14 @@
   </div>
 </div>
 
-<!-- ════════════════════════════
-     SCREEN 4 — COMPLEJIDAD / VOLUMEN
-════════════════════════════ -->
+<!-- ════════ SCREEN 4 — COMPLEJIDAD / VOLUMEN ════════ -->
 <div class="screen" id="screen-q3">
   <div class="screen-plain-bg"></div>
   <div class="card card-sm fade-in">
     <div class="prog-wrap" id="prog-q3"></div>
     <div class="section-head">
       <div class="dim-tag">Complejidad y Volumen</div>
-      <div class="section-q">Estima cuántas horas al mes consume este proceso en total? Sumando a todas las personas involucradas.</div>
+      <div class="section-q">Estima cuántas horas al mes consume este proceso en total. Sumando a todas las personas involucradas.</div>
     </div>
     <div class="field">
       <label>Tu respuesta</label>
@@ -555,9 +544,7 @@
   </div>
 </div>
 
-<!-- ════════════════════════════
-     SCREEN 5 — CALIDAD Y RIESGO
-════════════════════════════ -->
+<!-- ════════ SCREEN 5 — CALIDAD Y RIESGO ════════ -->
 <div class="screen" id="screen-q4">
   <div class="screen-plain-bg"></div>
   <div class="card card-sm fade-in">
@@ -575,9 +562,7 @@
   </div>
 </div>
 
-<!-- ════════════════════════════
-     SCREEN — LOADING
-════════════════════════════ -->
+<!-- ════════ SCREEN — LOADING ════════ -->
 <div class="screen" id="screen-loading">
   <div class="screen-plain-bg"></div>
   <div class="loader-wrap">
@@ -588,12 +573,12 @@
   </div>
 </div>
 
-<!-- ════════════════════════════
-     SCREEN — RESULTS
-════════════════════════════ -->
+<!-- ════════ SCREEN — RESULTS ════════ -->
 <div class="screen" id="screen-results">
+  <!-- Fondo oscuro sin astronauta duplicado -->
   <div class="screen-bg"></div>
 
+  <!-- Hero image solo en results también -->
   <div class="intro-image-hero" style="z-index:0;">
     <img src="https://res.cloudinary.com/dwcqgcl0m/image/upload/q_auto/f_auto/v1776720417/Labs_olcsss.png" alt="">
   </div>
@@ -644,13 +629,11 @@ function renderProg(containerId, step) {
 /* ── NAVIGATION ── */
 function goTo(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const s = document.getElementById(screenId);
-  s.classList.add('active');
+  document.getElementById(screenId).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function nextStep(step) {
-  // Validar campo actual
   if (step === 1) {
     const ids = ['f-nombre','f-celular','f-correo','f-empresa','f-cargo'];
     for (const id of ids) {
@@ -690,9 +673,7 @@ async function submitForm() {
   if (!ta.value.trim() || ta.value.trim().length < 10) {
     ta.focus(); ta.style.borderColor = 'var(--orange)'; return;
   }
-
   goTo('screen-loading');
-
   const payload = {
     nombre:      document.getElementById('f-nombre').value.trim(),
     celular:     document.getElementById('f-celular').value.trim(),
@@ -705,7 +686,6 @@ async function submitForm() {
     respuesta_4: document.getElementById('f-r4').value.trim(),
     timestamp:   new Date().toISOString()
   };
-
   try {
     const res = await fetch(WEBHOOK_URL, {
       method: 'POST',
@@ -724,13 +704,9 @@ async function submitForm() {
 
 /* ── RENDER RESULTS ── */
 function renderResults(data) {
-  // Greeting
   document.getElementById('res-greeting').textContent = `Hola ${data.nombre}, aquí está tu diagnóstico 👋`;
-
-  // Score
   document.getElementById('res-score').textContent = data.score_total;
 
-  // Nivel pill
   const pill = document.getElementById('res-nivel-pill');
   pill.textContent = data.nivel;
   const nivelMap = {
@@ -741,14 +717,12 @@ function renderResults(data) {
   };
   pill.className = 'nivel-pill ' + (nivelMap[data.nivel] || 'nivel-high');
 
-  // Mensaje
   const msg = data.mensaje_nivel || '';
   const parts = msg.split(/(automatización|cuellos de botella|ROI|optimización)/gi);
   document.getElementById('res-mensaje').innerHTML = parts.map((p, i) =>
     i % 2 === 1 ? `<strong>${p}</strong>` : p
   ).join('');
 
-  // Dimensiones
   const dims = [
     { key: 'dependencia_manual',   label: 'Dependencia Manual'   },
     { key: 'conocimiento_critico', label: 'Conocimiento Crítico' },
@@ -775,9 +749,7 @@ function renderResults(data) {
     document.querySelectorAll('.dim-bar-fill').forEach(b => { b.style.width = b.dataset.pct + '%'; });
   }, 120);
 
-  // NBA
   document.getElementById('res-nba').textContent = data.nba;
-
   goTo('screen-results');
 }
 </script>
