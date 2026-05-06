@@ -69,10 +69,8 @@
   }
   .screen.active { display: flex; flex-direction: column; }
 
-  /* ── BG intro/results — SIN imagen de fondo, solo color oscuro + gradiente ── */
   .screen-bg {
     position: fixed; inset: 0; z-index: -1;
-    /* Se elimina el background-image con el astronauta duplicado */
     background: #0f1315;
   }
   .screen-bg::after {
@@ -87,7 +85,6 @@
     );
   }
 
-  /* ── PLAIN BG — secciones intermedias ── */
   .screen-plain-bg {
     position: fixed; inset: 0; z-index: -1;
     background: var(--bg);
@@ -113,13 +110,12 @@
   /* ══════════════ INTRO ══════════════ */
   #screen-intro { padding-top: 0; }
   #screen-intro .inner {
-    width: 120%; max-width: 620px;
+    width: 100%; max-width: 520px;
     margin: 0 auto;
-    padding-top: 310px;
-    position: relative; z-index: 2;
+    padding-top: 200px;
+    position: relative; z-index: 1;
   }
 
-  /* Hero image — único astronauta visible */
   .intro-image-hero {
     position: fixed; top: 0; left: 50%; transform: translateX(-50%);
     width: 100%; max-width: 520px;
@@ -128,8 +124,8 @@
     border-radius: 0 0 28px 28px;
   }
   @media (min-width: 640px) {
-    .intro-image-hero { height: 200px; }
-    #screen-intro .inner { padding-top: 200px; }
+    .intro-image-hero { height: 280px; }
+    #screen-intro .inner { padding-top: 260px; }
   }
   .intro-image-hero img {
     width: 100%; height: 100%;
@@ -164,7 +160,7 @@
     color: var(--text); margin-bottom: 0.75rem;
   }
   .intro-desc {
-    font-size: 0.95rem; color: var(--orange);
+    font-size: 0.95rem; color: var(--text);
     line-height: 1.65; margin-bottom: 1.5rem; font-weight: 700;
   }
   .stats-strip {
@@ -253,6 +249,15 @@
   .field textarea { min-height: 108px; line-height: 1.6; }
   .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
   @media (max-width: 480px) { .fields-grid { grid-template-columns: 1fr; } }
+
+  /* ── FIELD ERROR ── */
+  .field-error {
+    color: var(--orange);
+    font-size: 0.75rem;
+    margin-top: 0.35rem;
+    font-weight: 600;
+    animation: fadeUp 0.2s ease both;
+  }
 
   /* ── BUTTONS ── */
   .btn-primary {
@@ -436,12 +441,9 @@
 <!-- ════════ SCREEN 0 — INTRO ════════ -->
 <div class="screen active" id="screen-intro">
   <div class="screen-bg"></div>
-
-  <!-- Único astronauta: el hero image -->
   <div class="intro-image-hero">
     <img src="https://res.cloudinary.com/dwcqgcl0m/image/upload/q_auto/f_auto/v1776720417/Labs_olcsss.png" alt="">
   </div>
-
   <div class="inner" style="width:100%;max-width:520px;margin:0 auto;padding-top:200px;position:relative;z-index:1;">
     <div class="intro-tag">RPA Intelligence</div>
     <h1 class="intro-h1">Índice de Madurez de<br><span>Automatización</span></h1>
@@ -575,14 +577,10 @@
 
 <!-- ════════ SCREEN — RESULTS ════════ -->
 <div class="screen" id="screen-results">
-  <!-- Fondo oscuro sin astronauta duplicado -->
   <div class="screen-bg"></div>
-
-  <!-- Hero image solo en results también -->
   <div class="intro-image-hero" style="z-index:0;">
     <img src="https://res.cloudinary.com/dwcqgcl0m/image/upload/q_auto/f_auto/v1776720417/Labs_olcsss.png" alt="">
   </div>
-
   <div class="inner" style="position:relative;z-index:1;">
     <div class="res-hero fade-in">
       <div class="res-greeting" id="res-greeting">Hola, aquí está tu diagnóstico 👋</div>
@@ -592,14 +590,11 @@
       <div class="nivel-pill" id="res-nivel-pill">—</div>
       <div class="res-msg" id="res-mensaje"></div>
     </div>
-
     <div class="dims-grid" id="dims-grid"></div>
-
     <div class="nba-box">
       <div class="nba-tag">⚡ Next Best Action</div>
       <div class="nba-text" id="res-nba"></div>
     </div>
-
     <div class="saved-msg">
       <span>✅</span>
       <span>Tu diagnóstico fue guardado. <strong>Un especialista de KrugerTech</strong> se pondrá en contacto contigo con las oportunidades de automatización identificadas.</span>
@@ -626,6 +621,25 @@ function renderProg(containerId, step) {
   c.innerHTML = html;
 }
 
+/* ── ERROR HELPERS ── */
+function showError(el, msg) {
+  el.style.borderColor = 'var(--orange)';
+  let err = el.parentElement.querySelector('.field-error');
+  if (!err) {
+    err = document.createElement('div');
+    err.className = 'field-error';
+    el.parentElement.appendChild(err);
+  }
+  err.textContent = msg;
+  el.focus();
+}
+
+function clearError(el) {
+  el.style.borderColor = '';
+  const err = el.parentElement.querySelector('.field-error');
+  if (err) err.remove();
+}
+
 /* ── NAVIGATION ── */
 function goTo(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -638,25 +652,34 @@ function nextStep(step) {
     const ids = ['f-nombre','f-celular','f-correo','f-empresa','f-cargo'];
     for (const id of ids) {
       const el = document.getElementById(id);
-      if (!el.value.trim()) { el.focus(); el.style.borderColor = 'var(--orange)'; return; }
+      if (!el.value.trim()) {
+        showError(el, 'Este campo es obligatorio.');
+        return;
+      } else { clearError(el); }
     }
     renderProg('prog-q1', 1);
     goTo('screen-q1');
   } else if (step === 2) {
     const ta = document.getElementById('f-r1');
-    if (!ta.value.trim() || ta.value.trim().length < 10) { ta.focus(); ta.style.borderColor = 'var(--orange)'; return; }
-    renderProg('prog-q2', 2);
-    goTo('screen-q2');
+    if (!ta.value.trim() || ta.value.trim().length < 10) {
+      showError(ta, 'Por favor describe el proceso con al menos 10 caracteres.');
+      return;
+    }
+    clearError(ta); renderProg('prog-q2', 2); goTo('screen-q2');
   } else if (step === 3) {
     const ta = document.getElementById('f-r2');
-    if (!ta.value.trim() || ta.value.trim().length < 10) { ta.focus(); ta.style.borderColor = 'var(--orange)'; return; }
-    renderProg('prog-q3', 3);
-    goTo('screen-q3');
+    if (!ta.value.trim() || ta.value.trim().length < 10) {
+      showError(ta, 'Por favor describe el impacto con al menos 10 caracteres.');
+      return;
+    }
+    clearError(ta); renderProg('prog-q3', 3); goTo('screen-q3');
   } else if (step === 4) {
     const ta = document.getElementById('f-r3');
-    if (!ta.value.trim() || ta.value.trim().length < 3) { ta.focus(); ta.style.borderColor = 'var(--orange)'; return; }
-    renderProg('prog-q4', 4);
-    goTo('screen-q4');
+    if (!ta.value.trim() || ta.value.trim().length < 3) {
+      showError(ta, 'Por favor indica las horas aproximadas del proceso.');
+      return;
+    }
+    clearError(ta); renderProg('prog-q4', 4); goTo('screen-q4');
   }
 }
 
@@ -671,8 +694,10 @@ function prevStep(screenId, step) {
 async function submitForm() {
   const ta = document.getElementById('f-r4');
   if (!ta.value.trim() || ta.value.trim().length < 10) {
-    ta.focus(); ta.style.borderColor = 'var(--orange)'; return;
+    showError(ta, 'Por favor describe las consecuencias con al menos 10 caracteres.');
+    return;
   }
+  clearError(ta);
   goTo('screen-loading');
   const payload = {
     nombre:      document.getElementById('f-nombre').value.trim(),
