@@ -69,10 +69,10 @@
   }
   .screen.active { display: flex; flex-direction: column; }
 
-  /* ── BG intro/results — SIN imagen de fondo, solo color oscuro + gradiente ── */
+  /* ── BG intro/results  ── */
   .screen-bg {
     position: fixed; inset: 0; z-index: -1;
-    /* Se elimina el background-image con el astronauta duplicado */
+    
     background: #0f1315;
   }
   .screen-bg::after {
@@ -87,7 +87,7 @@
     );
   }
 
-  /* ── PLAIN BG — secciones intermedias ── */
+  /* ── PLAIN BG  ── */
   .screen-plain-bg {
     position: fixed; inset: 0; z-index: -1;
     background: var(--bg);
@@ -119,7 +119,7 @@
     position: relative; z-index: 2;
   }
 
-  /* Hero image — único astronauta visible */
+  
   .intro-image-hero {
     position: fixed; top: 0; left: 50%; transform: translateX(-50%);
     width: 100%; max-width: 520px;
@@ -254,7 +254,7 @@
   .fields-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
   @media (max-width: 480px) { .fields-grid { grid-template-columns: 1fr; } }
 
-  /* CAMBIO 1 — estilo para mensajes de error */
+  /* Mensajes de error */
   .field-error {
     color: var(--orange);
     font-size: 0.75rem;
@@ -660,7 +660,7 @@ function goTo(screenId) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* CAMBIO 3 — validaciones con mensajes */
+/* Validaciones con mensajes */
 function nextStep(step) {
   if (step === 1) {
     const ids = ['f-nombre','f-celular','f-correo','f-empresa','f-cargo'];
