@@ -654,7 +654,7 @@ function nextStep(step) {
     goTo('screen-q3');
   } else if (step === 4) {
     const ta = document.getElementById('f-r3');
-    if (!ta.value.trim() || ta.value.trim().length < 10) { ta.focus(); ta.style.borderColor = 'var(--orange)'; return; }
+    if (!ta.value.trim() || ta.value.trim().length < 3) { ta.focus(); ta.style.borderColor = 'var(--orange)'; return; }
     renderProg('prog-q4', 4);
     goTo('screen-q4');
   }
